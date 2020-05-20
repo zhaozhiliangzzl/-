@@ -1,0 +1,45 @@
+#include<stdio.h>
+const int maxn=0x3f3f3f;
+int graph[100][100];
+int n,m;   //n表示顶点数目，m表示边数 
+void prim(){
+	int lowcost[100],mst[100];
+	int min=maxn,minid;
+	for(int i=2;i<=n;++i){
+		lowcost[i]=graph[1][i];
+		mst[i]=1;
+	}
+	for(int i=2;i<=n;++i){
+		min=maxn;
+		
+		for(int j=2;j<=n;++j){
+			if(lowcost[j]<min&&lowcost[j]!=0){
+				min=lowcost[j];
+				minid=j;
+			}
+		}
+		lowcost[minid]=0;
+		printf("V%d->V%d\n",mst[minid],minid);
+		for(int j=2;j<=n;++j){
+			if(graph[minid][j]<lowcost[j]){
+				lowcost[j]=graph[minid][j];
+				mst[j]=minid;
+			}
+		}
+	}
+}
+int main(){
+	int x,y,cost;
+	scanf("%d%d",&n,&m);
+	for(int i=1;i<=n;++i){
+		for(int j=1;j<=n;++j){
+			graph[i][j]=maxn;
+		}
+	}
+	for(int i=1;i<=m;++i){
+		scanf("%d%d%d",&x,&y,&cost);
+		graph[x][y]=cost;  
+		graph[y][x]=cost;
+	}
+	prim();
+} 
